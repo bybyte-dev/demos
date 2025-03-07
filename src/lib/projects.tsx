@@ -75,4 +75,32 @@ export const projects: Project[] = [
       },
     ],
   },
+  {
+    slug: "reproexport",
+    title: "Reproexport",
+    description: "Система управления маршрутами",
+    icon: Truck,
+    pages: [
+      {
+        title: "Добавление маршрута",
+        path: "/reproexport/add-route",
+        icon: Package,
+      },
+      {
+        title: "Добавление точки",
+        path: "/reproexport/add-point",
+        icon: Package,
+      },
+      {
+        title: "Аналитика",
+        path: "/reproexport/analytics",
+        icon: FlaskConical,
+      },
+      {
+        title: "Дашборд поездок",
+        path: "/reproexport/trips-dashboard",
+        icon: LayoutDashboard,
+      },
+    ],
+  },
 ];
