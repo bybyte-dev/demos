@@ -1,5 +1,5 @@
 # 1. Стадия зависимостей
-FROM node:18-alpine AS deps
+FROM node:22-alpine AS deps
 WORKDIR /app
 
 # Ставим yarn если вдруг его нет
@@ -9,7 +9,7 @@ RUN apk add --no-cache libc6-compat
 COPY package.json yarn.lock ./
 
 # Ставим зависимости
-RUN yarn install --frozen-lockfile --production
+RUN yarn install --frozen-lockfile 
 
 # 2. Стадия билда
 FROM node:18-alpine AS builder
