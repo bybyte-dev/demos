@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { FileDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -138,7 +138,7 @@ const PaymentSchedule = () => {
     },
   ]);
 
-  const addEmptyRow = () => {
+  const addEmptyRow = useCallback(() => {
     const newId = payments.length ? payments[payments.length - 1].id + 1 : 1;
     setPayments([
       ...payments,
@@ -175,7 +175,7 @@ const PaymentSchedule = () => {
         payment5Sum: "",
       },
     ]);
-  };
+  }, [payments]);
 
   const handleInputChange = (id: number, field: string, value: string) => {
     setPayments((prevPayments) =>
@@ -265,7 +265,7 @@ const PaymentSchedule = () => {
     if (payments.length === 0) {
       addEmptyRow();
     }
-  }, []);
+  }, [payments.length, addEmptyRow]);
 
   return (
     <div className="p-5 min-h-screen bg-[#ffe6f0]">
