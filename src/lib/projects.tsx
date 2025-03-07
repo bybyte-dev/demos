@@ -123,4 +123,96 @@ export const projects: Project[] = [
       },
     ],
   },
+
+  {  slug: "imservice",
+    title: "IMservice",
+    description: "Система управления рекламными контрагентами",
+    icon: Users,
+    pages: [
+      {
+        title: "Рекламодатели",
+        path: "/imservice/advertisers",
+        icon: Users,
+      },
+      {
+        title: "Рекламные агентства",
+        path: "/imservice/agencies",
+        icon: Users,
+      },
+      {
+        title: "Договора",
+        path: "/imservice/contracts",
+        icon: Package,
+      },
+      {
+        title: "Отчеты",
+        path: "/imservice/reports",
+        icon: LineChart,
+      },
+      {
+        title: "АВР",
+        path: "/imservice/avr",
+        icon: Package,
+      },
+      {
+        title: "Счета",
+        path: "/imservice/invoices",
+        icon: Package,
+      },
+    ],
+  },
+  {
+    slug: "baufarma",
+    title: "Бауфарма",
+    description: "Система управления проектами и тайм-трекинг",
+    icon: Calendar,
+    pages: [
+      {
+        title: "Общий тайминг",
+        path: "/baufarma/general-timing",
+        icon: Calendar,
+      },
+      {
+        title: "Проект",
+        path: "/baufarma/project",
+        icon: LayoutDashboard,
+      },
+      {
+        title: "Календарь сотрудника",
+        path: "/baufarma/employee-calendar",
+        icon: Calendar,
+      },
+      {
+        title: "Аналитика загруженности",
+        path: "/baufarma/workload-analytics",
+        icon: LineChart,
+      },
+    ],
+  },
+  {
+    slug: "op-survey",
+    title: "Опросник ОП",
+    description: "Система опросов",
+    icon: Package,
+    pages: [
+      {
+        title: "Опросник",
+        path: "/op-survey/questionnaire",
+        icon: Package,
+      },
+    ],
+  },
+  {
+    slug: "openspace-booking",
+    title: "Бронь Опенспейса",
+    description: "Система бронирования рабочих мест",
+    icon: LayoutDashboard,
+    pages: [
+      {
+        title: "Бронирование",
+        path: "/openspace-booking/booking",
+        icon: Calendar,
+      },
+    ],
+  }
 ];
