@@ -1,5 +1,5 @@
 # 1. Стадия зависимостей
-FROM node:22-alpine AS deps
+FROM node:20-alpine AS deps
 WORKDIR /app
 
 # Ставим yarn если вдруг его нет
@@ -12,7 +12,7 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile 
 
 # 2. Стадия билда
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Копируем зависимости и исходники
@@ -24,7 +24,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN yarn build
 
 # 3. Финальная стадия
-FROM node:18-alpine AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production

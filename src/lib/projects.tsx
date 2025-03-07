@@ -7,6 +7,8 @@ import {
   LucideIcon,
   Cuboid,
   FlaskConical,
+  LineChart,
+  QrCode,
 } from "lucide-react";
 
 export interface ProjectPage {
@@ -100,6 +102,24 @@ export const projects: Project[] = [
         title: "Дашборд поездок",
         path: "/reproexport/trips-dashboard",
         icon: LayoutDashboard,
+      },
+    ],
+  },
+  {
+    slug: "gas-reviews",
+    title: "АЗС Отзывы",
+    description: "Система агрегации и анализа отзывов сети АЗС",
+    icon: LayoutDashboard,
+    pages: [
+      {
+        title: "Аналитика",
+        path: "/gas-reviews/analytics",
+        icon: LineChart,
+      },
+      {
+        title: "QR система",
+        path: "/gas-reviews/qr",
+        icon: QrCode,
       },
     ],
   },
