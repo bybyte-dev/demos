@@ -1,10 +1,21 @@
 "use client";
 import React, { useState } from "react";
+import { FileDown, Info } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Payment {
   id: number;
   project: string;
   product: string;
+  description: string; // Новое поле для описания
   philipsCode: string;
   agskCode: string;
   quantity: string;
@@ -13,6 +24,7 @@ interface Payment {
   saleSum: string;
   agskPrice: string;
   purchasePrice: string;
+  purchaseSum: string;
   shipmentFrom: string;
   orderDate: string;
   shipmentDate: string;
@@ -30,7 +42,7 @@ interface Payment {
   payment4Sum: string;
   payment5Date: string;
   payment5Sum: string;
-  [key: string]: string | number; // Вот эта строчка решает проблему
+  [key: string]: string | number;
 }
 
 const PaymentSchedule = () => {
@@ -38,6 +50,7 @@ const PaymentSchedule = () => {
     "№",
     "Проект (договор)",
     "Товары",
+    "Описание",
     "Код Филипс",
     "Код АГСК (скрыть)",
     "Кол-во",
@@ -46,6 +59,7 @@ const PaymentSchedule = () => {
     "Сумма продажи",
     "Цена АГСК",
     "Цена закупки (скрыть)",
+    "Сумма закупки",
     "Откуда отгрузка",
     "Дата заказа",
     "Дата отгрузки",
@@ -66,12 +80,14 @@ const PaymentSchedule = () => {
   ]);
 
   const [visibleFields, setVisibleFields] = useState(fields);
+  const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
 
   const [payments, setPayments] = useState<Payment[]>([
     {
       id: 1,
       project: "",
       product: "",
+      description: "", // Новое поле
       philipsCode: "",
       agskCode: "",
       quantity: "",
@@ -80,6 +96,7 @@ const PaymentSchedule = () => {
       saleSum: "",
       agskPrice: "",
       purchasePrice: "",
+      purchaseSum: "",
       shipmentFrom: "",
       orderDate: "",
       shipmentDate: "",
@@ -108,6 +125,7 @@ const PaymentSchedule = () => {
         id: newId,
         project: "",
         product: "",
+        description: "",
         philipsCode: "",
         agskCode: "",
         quantity: "",
@@ -116,6 +134,7 @@ const PaymentSchedule = () => {
         saleSum: "",
         agskPrice: "",
         purchasePrice: "",
+        purchaseSum: "",
         shipmentFrom: "",
         orderDate: "",
         shipmentDate: "",
@@ -139,13 +158,38 @@ const PaymentSchedule = () => {
 
   const handleInputChange = (id: number, field: string, value: string) => {
     setPayments((prevPayments) =>
-      prevPayments.map((payment) =>
-        payment.id === id ? { ...payment, [field]: value } : payment
-      )
+      prevPayments.map((payment) => {
+        if (payment.id === id) {
+          const updatedPayment = { ...payment, [field]: value };
+
+          // Автоматический расчет суммы продажи
+          if (field === "quantity" || field === "salePrice") {
+            const quantity = parseFloat(updatedPayment.quantity) || 0;
+            const salePrice = parseFloat(updatedPayment.salePrice) || 0;
+            updatedPayment.saleSum = (quantity * salePrice).toString();
+          }
+
+          // Автоматический расчет суммы закупки
+          if (field === "quantity" || field === "purchasePrice") {
+            const quantity = parseFloat(updatedPayment.quantity) || 0;
+            const purchasePrice = parseFloat(updatedPayment.purchasePrice) || 0;
+            updatedPayment.purchaseSum = (quantity * purchasePrice).toString();
+          }
+
+          return updatedPayment;
+        }
+        return payment;
+      })
     );
 
     if (id === payments.length) {
       addEmptyRow();
+    }
+  };
+
+  const handleDescriptionChange = (value: string) => {
+    if (selectedPayment) {
+      handleInputChange(selectedPayment.id, "description", value);
     }
   };
 
@@ -160,6 +204,41 @@ const PaymentSchedule = () => {
       prev.includes(field) ? prev.filter((f) => f !== field) : [...prev, field]
     );
   };
+
+  const calculateTotals = () => {
+    const saleTotal = payments
+      .reduce((sum, payment) => sum + (parseFloat(payment.saleSum) || 0), 0)
+      .toFixed(2);
+
+    const purchaseTotal = payments
+      .reduce((sum, payment) => sum + (parseFloat(payment.purchaseSum) || 0), 0)
+      .toFixed(2);
+
+    return { saleTotal, purchaseTotal };
+  };
+
+  const exportToExcel = () => {
+    const headers = visibleFields;
+    const rows = payments.map((payment) =>
+      headers.map((header) => payment[header])
+    );
+
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      headers.join(",") +
+      "\n" +
+      rows.map((row) => row.join(",")).join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "payment-schedule.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const totals = calculateTotals();
 
   return (
     <div
@@ -177,11 +256,16 @@ const PaymentSchedule = () => {
           boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <h1>График Платежей Клиентов</h1>
+        <div className="flex justify-between items-center mb-4">
+          <h1>График Платежей Клиентов</h1>
+          <Button onClick={exportToExcel} className="flex items-center gap-2">
+            <FileDown size={16} />
+            Экспорт в Excel
+          </Button>
+        </div>
 
-        {/* Блок управления видимостью полей */}
         <div>
-          <button
+          <Button
             onClick={() => {
               const controlBlock = document.getElementById("field-control");
               if (controlBlock) {
@@ -189,38 +273,30 @@ const PaymentSchedule = () => {
                   controlBlock.style.display === "none" ? "block" : "none";
               }
             }}
-            style={{
-              marginBottom: "10px",
-              backgroundColor: "#007bff",
-              color: "#fff",
-              border: "none",
-              padding: "10px 20px",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
+            variant="outline"
+            className="mb-4"
           >
             Показать/Скрыть управление полями
-          </button>
+          </Button>
           <div
             id="field-control"
             style={{ display: "none", marginBottom: "20px" }}
+            className="grid grid-cols-3 gap-4"
           >
             {fields.map((field, index) => (
-              <div key={index} style={{ marginBottom: "10px" }}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={visibleFields.includes(field)}
-                    onChange={() => toggleFieldVisibility(field)}
-                  />{" "}
-                  {field}
-                </label>
+              <div key={index} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={visibleFields.includes(field)}
+                  onChange={() => toggleFieldVisibility(field)}
+                  id={`field-${index}`}
+                />
+                <label htmlFor={`field-${index}`}>{field}</label>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Таблица с горизонтальным скроллом */}
         <div style={{ overflowX: "auto" }}>
           <table
             style={{
@@ -273,25 +349,61 @@ const PaymentSchedule = () => {
                           style={{
                             border: "1px solid #ddd",
                             padding: "8px",
+                            position: "relative",
                           }}
                         >
-                          <input
-                            type="text"
-                            value={payment[field]}
-                            onChange={(e) =>
-                              handleInputChange(
-                                payment.id,
-                                field,
-                                e.target.value
-                              )
-                            }
-                            style={{
-                              width: "100%",
-                              border: "none",
-                              background: "transparent",
-                              padding: "4px",
-                            }}
-                          />
+                          {field === "Описание" ? (
+                            <div className="flex items-center gap-2">
+                              <Dialog>
+                                <DialogTrigger asChild>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="p-0 h-8"
+                                    onClick={() => setSelectedPayment(payment)}
+                                  >
+                                    <Info size={16} />
+                                    {payment.description
+                                      ? " Редактировать"
+                                      : " Добавить описание"}
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-[425px]">
+                                  <DialogHeader>
+                                    <DialogTitle>Описание товара</DialogTitle>
+                                  </DialogHeader>
+                                  <div className="grid gap-4 py-4">
+                                    <Textarea
+                                      placeholder="Введите описание товара..."
+                                      value={payment.description}
+                                      onChange={(e) =>
+                                        handleDescriptionChange(e.target.value)
+                                      }
+                                      className="min-h-[200px]"
+                                    />
+                                  </div>
+                                </DialogContent>
+                              </Dialog>
+                            </div>
+                          ) : (
+                            <input
+                              type="text"
+                              value={payment[field]}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  payment.id,
+                                  field,
+                                  e.target.value
+                                )
+                              }
+                              style={{
+                                width: "100%",
+                                border: "none",
+                                background: "transparent",
+                                padding: "4px",
+                              }}
+                            />
+                          )}
                         </td>
                       )
                   )}
@@ -303,23 +415,65 @@ const PaymentSchedule = () => {
                     }}
                   >
                     {index !== payments.length - 1 && (
-                      <button
+                      <Button
+                        variant="destructive"
+                        size="sm"
                         onClick={() => deleteRow(payment.id)}
-                        style={{
-                          backgroundColor: "#ff4d4d",
-                          color: "#fff",
-                          border: "none",
-                          padding: "5px 10px",
-                          borderRadius: "5px",
-                          cursor: "pointer",
-                        }}
                       >
                         Удалить
-                      </button>
+                      </Button>
                     )}
                   </td>
                 </tr>
               ))}
+              <tr>
+                <td
+                  colSpan={8}
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "12px",
+                    textAlign: "right",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Итого по продажам:
+                </td>
+                <td
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "12px",
+                    backgroundColor: "#f9f9f9",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {totals.saleTotal}
+                </td>
+                <td
+                  colSpan={2}
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "12px",
+                    textAlign: "right",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Итого по закупкам:
+                </td>
+                <td
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "12px",
+                    backgroundColor: "#f9f9f9",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {totals.purchaseTotal}
+                </td>
+                <td
+                  colSpan={visibleFields.length - 12}
+                  style={{ border: "1px solid #ddd" }}
+                ></td>
+              </tr>
             </tbody>
           </table>
         </div>

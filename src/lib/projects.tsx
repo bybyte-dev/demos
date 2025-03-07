@@ -55,6 +55,11 @@ export const projects: Project[] = [
         path: "/batys-massiv/clients-schedule-1",
         icon: Users,
       },
+      {
+        title: "График клиентов 2",
+        path: "/batys-massiv/clients-schedule-2",
+        icon: Users,
+      },
     ],
   },
   {

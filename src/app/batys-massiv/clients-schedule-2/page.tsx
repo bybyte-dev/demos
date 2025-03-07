@@ -26,17 +26,17 @@ const defaultFieldsConfig = {
     { id: "saleSum", name: "Сумма продажи", visible: true },
     { id: "agskPrice", name: "Цена АГСК", visible: true },
     { id: "purchasePrice", name: "Цена закупки", visible: false },
-    { id: "purchaseSum", name: "Сумма закупки", visible: true },
-    { id: "shipmentFrom", name: "Откуда отгрузка", visible: true },
-    { id: "orderDate", name: "Дата заказа", visible: true },
-    { id: "shipmentDate", name: "Дата отгрузки", visible: true },
-    { id: "deliveryToWarehouse", name: "Дата доставки на СВХ", visible: true },
+    { id: "purchaseSum", name: "Сумма закупки", visible: false },
+    { id: "shipmentFrom", name: "Откуда отгрузка", visible: false },
+    { id: "orderDate", name: "Дата заказа", visible: false },
+    { id: "shipmentDate", name: "Дата отгрузки", visible: false },
+    { id: "deliveryToWarehouse", name: "Дата доставки на СВХ", visible: false },
     { id: "clientShipmentDate", name: "Дата отгрузки клиенту", visible: false },
     { id: "clientDeliveryDate", name: "Дата доставки клиенту", visible: false },
     {
       id: "contractDeliveryDate",
       name: "Дата доставки клиенту по договору",
-      visible: false,
+      visible: true,
     },
     { id: "payment1Date", name: "Оплата 1 (Дата)", visible: true },
     { id: "payment1Sum", name: "Оплата 1 (Сумма)", visible: true },
@@ -271,7 +271,7 @@ const PaymentSchedule = () => {
     <div className="p-5 min-h-screen bg-[#ffe6f0]">
       <div className="bg-white rounded-xl p-5 shadow-md">
         <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">График Платежей Поставщиков</h1>
+          <h1 className="text-2xl font-bold">График Платежей Клиентов</h1>
           <div className="flex gap-2">
             <Button
               onClick={() => setShowFieldsConfig(!showFieldsConfig)}
