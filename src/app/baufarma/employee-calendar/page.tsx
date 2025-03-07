@@ -1,4 +1,4 @@
-import { Calendar } from "@/components/ui/calendar";
+"use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -9,8 +9,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { CheckCircle, Clock, Filter } from "lucide-react";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+} from "react-beautiful-dnd";
+import { Clock, Filter } from "lucide-react";
+import { useState } from "react";
 
 interface Task {
   id: string;
@@ -65,9 +71,6 @@ const TaskCalendar = () => {
   ]);
 
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [selectedDate, setSelectedDate] = useState<Date>(
-    new Date("2025-01-01")
-  );
 
   // Получаем задачи для беклога (без даты)
   const backlogTasks = tasks.filter(
@@ -86,7 +89,7 @@ const TaskCalendar = () => {
   };
 
   // Обработка перетаскивания
-  const onDragEnd = (result: any) => {
+  const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
 
     const newTasks = [...tasks];

@@ -184,7 +184,7 @@ const OpSurvey = () => {
 
   const updateEstimates = () => {
     let timeSum = 0;
-    let complexityPoints = { easy: 0, medium: 0, hard: 0 };
+    const complexityPoints = { easy: 0, medium: 0, hard: 0 };
 
     Object.entries(selectedAnswers).forEach(([questionId, answerId]) => {
       surveyData.forEach((category) => {
