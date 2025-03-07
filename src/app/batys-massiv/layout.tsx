@@ -32,7 +32,7 @@ export default function ProjectLayout({
           <Link href="/" className="flex items-center space-x-2">
             <Home className="h-6 w-6 text-slate-600" />
             {sidebarOpen && (
-              <span className="font-bold text-slate-800">ByteDemo</span>
+              <span className="font-bold text-slate-800">bybytedemos</span>
             )}
           </Link>
         </div>
