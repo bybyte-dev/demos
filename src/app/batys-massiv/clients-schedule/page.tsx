@@ -1,8 +1,40 @@
 "use client";
 import React, { useState } from "react";
 
+interface Payment {
+  id: number;
+  project: string;
+  product: string;
+  philipsCode: string;
+  agskCode: string;
+  quantity: string;
+  warehouse: string;
+  salePrice: string;
+  saleSum: string;
+  agskPrice: string;
+  purchasePrice: string;
+  shipmentFrom: string;
+  orderDate: string;
+  shipmentDate: string;
+  deliveryToWarehouse: string;
+  clientShipmentDate: string;
+  clientDeliveryDate: string;
+  contractDeliveryDate: string;
+  payment1Date: string;
+  payment1Sum: string;
+  payment2Date: string;
+  payment2Sum: string;
+  payment3Date: string;
+  payment3Sum: string;
+  payment4Date: string;
+  payment4Sum: string;
+  payment5Date: string;
+  payment5Sum: string;
+  [key: string]: string | number; // Вот эта строчка решает проблему
+}
+
 const PaymentSchedule = () => {
-  const [fields, setFields] = useState([
+  const [fields] = useState<string[]>([
     "№",
     "Проект (договор)",
     "Товары",
@@ -35,7 +67,7 @@ const PaymentSchedule = () => {
 
   const [visibleFields, setVisibleFields] = useState(fields);
 
-  const [payments, setPayments] = useState([
+  const [payments, setPayments] = useState<Payment[]>([
     {
       id: 1,
       project: "",

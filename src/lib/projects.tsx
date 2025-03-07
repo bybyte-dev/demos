@@ -1,17 +1,24 @@
 // src/lib/projects.ts
-import { LayoutDashboard, Package, Calendar, Users, Truck } from "lucide-react";
+import {
+  LayoutDashboard,
+  Package,
+  Calendar,
+  Users,
+  Truck,
+  LucideIcon,
+} from "lucide-react";
 
 export interface ProjectPage {
   title: string;
   path: string;
-  icon: any; // Lucide иконка
+  icon: LucideIcon; // Lucide иконка
 }
 
 export interface Project {
   slug: string;
   title: string;
   description: string;
-  icon: any;
+  icon: LucideIcon;
   pages: ProjectPage[];
 }
 
