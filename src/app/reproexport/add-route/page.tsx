@@ -1,27 +1,33 @@
-"use client"
-import React, { useState } from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+"use client";
+import React, { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { X } from 'lucide-react';
+import { X } from "lucide-react";
 
 const RouteCreator = () => {
   const [selectedPoints, setSelectedPoints] = useState<string[]>([]);
   const [showResult, setShowResult] = useState(false);
 
   const mockLocations = [
-    { name: 'Супермаркет "Центральный"', address: 'ул. Ленина, 45' },
-    { name: 'ТЦ "Мегаполис"', address: 'пр. Абая, 150' },
-    { name: 'Бизнес центр "Нурлы"', address: 'ул. Достык, 12' },
-    { name: 'Магазин "Светлый"', address: 'ул. Жандосова, 58' },
-    { name: 'Аптека "Здоровье"', address: 'ул. Тимирязева, 42' },
-    { name: 'Ресторан "Восток"', address: 'ул. Сейфуллина, 168' },
-    { name: 'Отель "Премиум"', address: 'пр. Аль-Фараби, 77' },
-    { name: 'Школа №25', address: 'ул. Байтурсынова, 126' },
+    { name: 'Супермаркет "Центральный"', address: "ул. Ленина, 45" },
+    { name: 'ТЦ "Мегаполис"', address: "пр. Абая, 150" },
+    { name: 'Бизнес центр "Нурлы"', address: "ул. Достык, 12" },
+    { name: 'Магазин "Светлый"', address: "ул. Жандосова, 58" },
+    { name: 'Аптека "Здоровье"', address: "ул. Тимирязева, 42" },
+    { name: 'Ресторан "Восток"', address: "ул. Сейфуллина, 168" },
+    { name: 'Отель "Премиум"', address: "пр. Аль-Фараби, 77" },
+    { name: "Школа №25", address: "ул. Байтурсынова, 126" },
   ];
 
   return (
@@ -98,14 +104,18 @@ const RouteCreator = () => {
         <ScrollArea className="h-[300px] border rounded-md p-4">
           <div className="grid grid-cols-2 gap-4">
             {mockLocations.map((location, index) => (
-              <Card 
-                key={index} 
+              <Card
+                key={index}
                 className={`cursor-pointer ${
-                  selectedPoints.includes(location.name) ? 'border-blue-500' : ''
+                  selectedPoints.includes(location.name)
+                    ? "border-blue-500"
+                    : ""
                 }`}
                 onClick={() => {
                   if (selectedPoints.includes(location.name)) {
-                    setSelectedPoints(selectedPoints.filter(p => p !== location.name));
+                    setSelectedPoints(
+                      selectedPoints.filter((p) => p !== location.name)
+                    );
                   } else {
                     setSelectedPoints([...selectedPoints, location.name]);
                   }
@@ -113,7 +123,9 @@ const RouteCreator = () => {
               >
                 <CardContent className="p-4">
                   <div className="font-medium">{location.name}</div>
-                  <div className="text-sm text-gray-500">{location.address}</div>
+                  <div className="text-sm text-gray-500">
+                    {location.address}
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -125,20 +137,22 @@ const RouteCreator = () => {
           <Label htmlFor="return-office">Конец маршрута в офисе</Label>
         </div>
 
-        <Button 
-          className="w-full" 
-          onClick={() => setShowResult(true)}
-        >
+        <Button className="w-full" onClick={() => setShowResult(true)}>
           Рассчитать маршрут
         </Button>
 
         {showResult && (
           <div className="mt-4 p-4 border rounded-md bg-gray-50">
-            <h3 className="font-medium text-green-600 mb-2">Маршрут успешно создан!</h3>
+            <h3 className="font-medium text-green-600 mb-2">
+              Маршрут успешно создан!
+            </h3>
             <div className="space-y-2">
               <p>Общее расстояние: 24.5 км</p>
               <p>Расход топлива: 2.08 л</p>
-              <p>Маршрут: Офис → ТЦ "Мегаполис" → Школа №25 → Аптека "Здоровье" → Офис</p>
+              <p>
+                Маршрут: Офис → ТЦ Мегаполис → Школа №25 → Аптека Здоровье →
+                Офис
+              </p>
             </div>
           </div>
         )}

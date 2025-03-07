@@ -1,6 +1,5 @@
-"use client"
+"use client";
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
@@ -14,29 +13,17 @@ import {
   Line,
   BarChart,
   Bar,
-  PieChart,
-  Pie,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
-  Cell,
   ResponsiveContainer,
-  Area,
-  AreaChart,
   ComposedChart,
   Scatter,
   ScatterChart,
 } from "recharts";
-import {
-  Car,
-  Route,
-  TrendingUp,
-  MapPin,
-  Clock,
-  DollarSign,
-} from "lucide-react";
+import { Car } from "lucide-react";
 
 const AnalyticsDashboard = () => {
   const [timeRange, setTimeRange] = useState("month");
