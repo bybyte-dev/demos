@@ -124,7 +124,8 @@ export const projects: Project[] = [
     ],
   },
 
-  {  slug: "imservice",
+  {
+    slug: "imservice",
     title: "IMservice",
     description: "Система управления рекламными контрагентами",
     icon: Users,
@@ -214,5 +215,5 @@ export const projects: Project[] = [
         icon: Calendar,
       },
     ],
-  }
+  },
 ];
